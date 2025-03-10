@@ -1,0 +1,401 @@
+/* Base Styles and Variables */
+:root {
+    --primary-color: #0cebeb;
+    --secondary-color: #20e3b2;
+    --accent-color: #ffffff;
+    --background-dark: #0a0a0a;
+    --background-card: rgba(16, 18, 27, 0.8);
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Space Background with Stars and Twinkling Effect */
+.stars, .twinkling {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.stars {
+    background: #000 url('assets/stars.png') repeat top center;
+}
+
+.twinkling {
+    background: transparent url('assets/twinkling.png') repeat top center;
+    animation: move-twink-back 200s linear infinite;
+}
+
+@keyframes move-twink-back {
+    from {background-position: 0 0;}
+    to {background-position: -10000px 5000px;}
+}
+
+/* Container Layout */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header Styles */
+header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.logo-container {
+    display: inline-block;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(10, 10, 10, 0.8), rgba(30, 30, 30, 0.4));
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 1rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.logo-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+    }
+    50% {
+        text-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+    }
+    100% {
+        text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+    }
+}
+
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+}
+
+.highlight {
+    color: var(--accent-color);
+    -webkit-text-fill-color: var(--accent-color);
+}
+
+.tagline {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+/* Main Content */
+main {
+    flex: 1;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.service-card {
+    height: 280px;
+    perspective: 1000px;
+    position: relative;
+}
+
+.card-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    border-radius: 16px;
+    background: var(--background-card);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    overflow: hidden;
+}
+
+.service-card:hover .card-content {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    z-index: -1;
+    border-radius: 18px;
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+
+.service-card:hover::before {
+    opacity: 1;
+    animation: border-animation 2s linear infinite;
+}
+
+@keyframes border-animation {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+.service-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+    transition: all var(--transition-speed);
+}
+
+.service-card[data-service="jellyfin"] .service-icon {
+    color: #00a4dc;
+}
+
+.service-card[data-service="jellyseerr"] .service-icon {
+    color: #ff9b3c;
+}
+
+.service-card[data-service="jellyaccounts"] .service-icon {
+    color: #4caf50;
+}
+
+.service-card[data-service="immich"] .service-icon {
+    color: #4f46e5;
+}
+
+.service-card[data-service="ai"] .service-icon {
+    color: #ff00cc;
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.service-card h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.service-card p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.service-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: #000;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: all var(--transition-speed);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.service-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+    transition: all 0.4s;
+    z-index: -1;
+}
+
+.service-link:hover::before {
+    width: 100%;
+}
+
+.service-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Disabled service styling */
+.service-disabled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    background: rgba(100, 100, 100, 0.3);
+    color: var(--text-secondary);
+    border-radius: 30px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: not-allowed;
+}
+
+.service-card[data-service="ai"] .service-disabled {
+    opacity: 0.8;
+}
+
+/* Footer Styles */
+footer {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.system-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat i {
+    color: var(--primary-color);
+}
+
+.copyright {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    padding: 1rem 0;
+}
+
+.uptime {
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .logo-icon {
+        font-size: 2rem;
+    }
+    
+    .services-grid {
+        gap: 1.5rem;
+    }
+    
+    .system-stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .tagline {
+        font-size: 1rem;
+    }
+    
+    .service-card {
+        height: 250px;
+    }
+    
+    .service-icon {
+        font-size: 2.5rem;
+        width: 70px;
+        height: 70px;
+    }
+}
