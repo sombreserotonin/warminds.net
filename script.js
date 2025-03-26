@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeUI();
     addCardHoverEffects();
     addParallaxEffect();
+    addParticleEffects();
+    addDynamicLighting();
+    addSmoothScrolling();
 });
 
 // Initialize UI elements and animations
@@ -66,7 +69,7 @@ function addCardHoverEffects() {
     });
 }
 
-// Add a subtle parallax effect to the background
+// Enhanced parallax effect with depth
 function addParallaxEffect() {
     const backgroundGradient = document.querySelector('.background-gradient');
     
@@ -75,9 +78,78 @@ function addParallaxEffect() {
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
             
-            backgroundGradient.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+            backgroundGradient.style.transform = `
+                translate(${x * 20 - 10}px, ${y * 20 - 10}px)
+                scale(1.02)
+            `;
         });
     }
+}
+
+// Add interactive particle effects
+function addParticleEffects() {
+    const container = document.querySelector('.container');
+    if (!container) return;
+
+    const particleCount = window.innerWidth < 768 ? 30 : 50;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random properties
+        const size = Math.random() * 3 + 1;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const opacity = Math.random() * 0.4 + 0.1;
+        const duration = Math.random() * 20 + 10;
+        
+        particle.style.cssText = `
+            width: ${size}px;
+            height: ${size}px;
+            left: ${posX}%;
+            top: ${posY}%;
+            opacity: ${opacity};
+            animation-duration: ${duration}s;
+            background: var(--accent-primary);
+        `;
+        
+        container.appendChild(particle);
+    }
+}
+
+// Add dynamic lighting effects
+function addDynamicLighting() {
+    const cards = document.querySelectorAll('.service-card');
+    if (!cards.length) return;
+
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
+}
+
+// Smooth scrolling for anchor links
+function addSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
 }
 
 // Animate elements when they come into view

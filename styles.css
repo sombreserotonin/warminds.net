@@ -1,20 +1,21 @@
 /* Linear-inspired Design System */
 :root {
-    /* Colors */
+    /* Colors - OLED Optimized */
     --background: #000000;
-    --background-secondary: #101010;
-    --background-tertiary: #1a1a1a;
+    --background-secondary: #0a0a0a;
+    --background-tertiary: #121212;
     --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-tertiary: rgba(255, 255, 255, 0.5);
-    --accent-primary: #5e6ad2;
-    --accent-secondary: #8a94f0;
-    --accent-gradient: linear-gradient(90deg, #5e6ad2, #8a94f0);
-    --border-color: rgba(255, 255, 255, 0.1);
+    --text-secondary: rgba(255, 255, 255, 0.8);
+    --text-tertiary: rgba(255, 255, 255, 0.6);
+    --accent-primary: #7d8bff;
+    --accent-secondary: #a6b0ff;
+    --accent-gradient: linear-gradient(135deg, #7d8bff, #a6b0ff);
+    --border-color: rgba(255, 255, 255, 0.08);
     --card-background: rgba(255, 255, 255, 0.03);
-    --card-hover: rgba(255, 255, 255, 0.05);
-    --card-active: rgba(255, 255, 255, 0.07);
-    --shadow-color: rgba(0, 0, 0, 0.5);
+    --card-hover: rgba(255, 255, 255, 0.08);
+    --card-active: rgba(255, 255, 255, 0.12);
+    --shadow-color: rgba(0, 0, 0, 0.7);
+    --glow-color: rgba(125, 139, 255, 0.15);
     
     /* Typography */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -46,6 +47,27 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Particle Effects */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float linear infinite;
+    z-index: 0;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) translateX(0);
+    }
+    50% {
+        transform: translateY(-100px) translateX(20px);
+    }
+    100% {
+        transform: translateY(0) translateX(0);
+    }
 }
 
 html {
@@ -88,9 +110,12 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: radial-gradient(circle at top right, rgba(94, 106, 210, 0.1), transparent 60%),
-                radial-gradient(circle at bottom left, rgba(138, 148, 240, 0.05), transparent 40%);
-    opacity: 0.6;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(125, 139, 255, 0.08), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(166, 176, 255, 0.05), transparent 40%),
+        linear-gradient(to bottom, #000000, #0a0a0a);
+    opacity: 1;
+    transition: transform 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }
 
 /* Container */
@@ -185,14 +210,41 @@ main {
     background: var(--card-background);
     border: 1px solid var(--border-color);
     overflow: hidden;
-    transition: transform var(--transition-normal), background-color var(--transition-normal), opacity var(--transition-normal);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     opacity: 0;
     transform: translateY(20px);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle at var(--mouse-x, 100px) var(--mouse-y, 100px),
+        rgba(125, 139, 255, 0.1),
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.service-card:hover::before {
+    opacity: 1;
 }
 
 .service-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
     background: var(--card-hover);
+    box-shadow: 0 8px 32px var(--glow-color);
+    border-color: rgba(125, 139, 255, 0.2);
 }
 
 .card-content {
@@ -215,18 +267,22 @@ main {
 
 .service-card[data-service="jellyfin"] .service-icon {
     color: #00a4dc;
+    text-shadow: 0 0 10px rgba(0, 164, 220, 0.3);
 }
 
 .service-card[data-service="jellyseerr"] .service-icon {
     color: #ff9b3c;
+    text-shadow: 0 0 10px rgba(255, 155, 60, 0.3);
 }
 
 .service-card[data-service="jellyaccounts"] .service-icon {
     color: #4caf50;
+    text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
 }
 
 .service-card[data-service="ai"] .service-icon {
     color: #ff00cc;
+    text-shadow: 0 0 10px rgba(255, 0, 204, 0.3);
 }
 
 .service-card h2 {
